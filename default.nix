@@ -37,7 +37,7 @@ in {
             RemainAfterExit = true;
             ExecStart = let
               krew = "${pkgs.krew}/bin/krew";
-            in (toString pkgs.writeShellScript "update krew" ''
+            in toString (pkgs.writeShellScript "update-krew" ''
               ${krew} update 
               ${krew} install krew
             ''); 
