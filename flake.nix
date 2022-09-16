@@ -6,6 +6,7 @@
   };
 
   outputs = { self, nixpkgs }: {
+    # TODO: Surely there's a default? Or at the very least just use nixosModules.default
     nixosModules.kubernetes = import ./default.nix;
   };
 }

@@ -12,6 +12,7 @@ in {
     };
   };
 
+  # TODO: Obviously add krew to the path
   config = mkIf cfg.enable (mkMerge [
     ({
       home.packages = [ pkgs.kubectl ];
@@ -33,8 +34,11 @@ in {
           Service = {
             Type = "oneshot";
             RemainAfterExit = true;
-            ExecStart = ''
-              ${pkgs.krew}/bin/krew install krew
+            ExecStart = let
+              krew="${pkgs.krew}/bin/krew";
+            in ''
+              ${krew} update 
+              ${krew} install krew
             ''; 
           };
         };
