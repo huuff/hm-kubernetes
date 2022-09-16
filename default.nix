@@ -24,7 +24,7 @@ in {
       systemd.user = {
         services.krew = {
           Unit = {
-            Description = "Set up Kubernetes' Krew plugin manager";
+            Description = "Set up Krew plugin manager for Kubernetes";
           };
 
 
