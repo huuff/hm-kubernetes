@@ -70,15 +70,15 @@ in {
       };
 
       programs = {
-        bash.initExtra = mkIf cfg.enableBashIntegration ''
+        bash.initExtra = mkIf cfg.krew.enableBashIntegration ''
           export PATH="$PATH:$HOME/.krew/bin"
         '';
 
-        zsh.initExtra = mkIf cfg.enableZshIntegration ''
+        zsh.initExtra = mkIf cfg.krew.enableZshIntegration ''
           export PATH="$PATH:$HOME/.krew/bin"
         '';
 
-        fish.shellInit = mkIf cfg.enableFishIntegration ''
+        fish.shellInit = mkIf cfg.krew.enableFishIntegration ''
           fish_add_path "$HOME/.krew/bin"
         '';
       };
