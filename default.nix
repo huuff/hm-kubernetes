@@ -7,6 +7,24 @@ in {
   options.programs.kubernetes = {
     enable = mkEnableOption "Kubernetes";
 
+    enableBashIntegration = mkOption {
+      default = true;
+      type = bool;
+      description = "Whether to enable Bash integration.";
+    };
+
+    enableZshIntegration = mkOption {
+      default = true;
+      type = bool;
+      description = "Whether to enable Zsh integration.";
+    };
+
+    enableFishIntegration = mkOption {
+      default = true;
+      type = bool;
+      description = "Whether to enable Fish integration.";
+    };
+
     krew = {
       enable = mkEnableOption "Krew";
 
@@ -16,30 +34,28 @@ in {
         description = "Names of krew plugins to install";
       };
 
-      enableBashIntegration = mkOption {
-        default = true;
-        type = bool;
-        description = "Whether to enable Bash integration.";
-      };
-
-      enableZshIntegration = mkOption {
-        default = true;
-        type = bool;
-        description = "Whether to enable Zsh integration.";
-      };
-
-      enableFishIntegration = mkOption {
-        default = true;
-        type = bool;
-        description = "Whether to enable Fish integration.";
-      };
     };
   };
 
-  # TODO: Obviously add krew to the path
   config = mkIf cfg.enable (mkMerge [
     ({
       home.packages = [ pkgs.kubectl ];
+
+      programs = let
+        kubectl = "${pkgs.kubectl}/bin/kubectl";
+      in {
+        bash.initExtra = mkIf cfg.enableBashIntegration ''
+          source <("${kubectl}" completion bash)
+        '';
+
+        zsh.initExtra = mkIf cfg.enableZshIntegration ''
+          source <("${kubectl}" completion zsh)
+        '';
+
+        fish.shellInit = mkIf cfg.enableFishIntegration ''
+          "${kubectl}" completion fish | source
+        '';
+      };
     })
 
     (mkIf cfg.krew.enable {
@@ -70,15 +86,15 @@ in {
       };
 
       programs = {
-        bash.initExtra = mkIf cfg.krew.enableBashIntegration ''
+        bash.initExtra = mkIf cfg.enableBashIntegration ''
           export PATH="$PATH:$HOME/.krew/bin"
         '';
 
-        zsh.initExtra = mkIf cfg.krew.enableZshIntegration ''
+        zsh.initExtra = mkIf cfg.enableZshIntegration ''
           export PATH="$PATH:$HOME/.krew/bin"
         '';
 
-        fish.shellInit = mkIf cfg.krew.enableFishIntegration ''
+        fish.shellInit = mkIf cfg.enableFishIntegration ''
           fish_add_path "$HOME/.krew/bin"
         '';
       };
