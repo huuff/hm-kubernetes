@@ -9,6 +9,12 @@ in {
 
     krew = {
       enable = mkEnableOption "Krew";
+
+      plugins = mkOption {
+        type = listOf str;
+        default = [];
+        description = "Names of krew plugins to install";
+      };
     };
   };
 
@@ -39,7 +45,7 @@ in {
               krew = "${pkgs.krew}/bin/krew";
             in toString (pkgs.writeShellScript "update-krew" ''
               ${krew} update 
-              ${krew} install krew
+              ${krew} install krew ${concatStringsSep " " cfg.krew.plugins}
             ''); 
           };
         };
