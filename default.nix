@@ -27,6 +27,13 @@ in {
             Description = "Set up Kubernetes' Krew plugin manager";
           };
 
+          script = let
+            krew = "${pkgs.krew}/bin/krew";
+          in ''
+            ${krew} update 
+            ${krew} install krew
+          ''; 
+
           Install = {
             WantedBy = [ "default.target" ];
           };
@@ -34,12 +41,6 @@ in {
           Service = {
             Type = "oneshot";
             RemainAfterExit = true;
-            Script = let
-              krew = "${pkgs.krew}/bin/krew";
-            in ''
-              ${krew} update 
-              ${krew} install krew
-            ''; 
           };
         };
       };
