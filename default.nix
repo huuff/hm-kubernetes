@@ -33,6 +33,7 @@ in {
           };
 
           Service = {
+            Environment = "PATH=${pkgs.git}/bin";
             Type = "oneshot";
             RemainAfterExit = true;
             ExecStart = let
