@@ -34,8 +34,8 @@ in {
           Service = {
             Type = "oneshot";
             RemainAfterExit = true;
-            ExecStart = let
-              krew="${pkgs.krew}/bin/krew";
+            Script = let
+              krew = "${pkgs.krew}/bin/krew";
             in ''
               ${krew} update 
               ${krew} install krew
