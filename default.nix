@@ -35,7 +35,6 @@ in {
           Service = {
             Environment = "PATH=${pkgs.git}/bin";
             Type = "oneshot";
-            RemainAfterExit = true;
             ExecStart = let
               krew = "${pkgs.krew}/bin/krew";
             in toString (pkgs.writeShellScript "update-krew" ''
