@@ -15,6 +15,24 @@ in {
         default = [];
         description = "Names of krew plugins to install";
       };
+
+      enableBashIntegration = mkOption {
+        default = true;
+        type = bool;
+        description = "Whether to enable Bash integration.";
+      };
+
+      enableZshIntegration = mkOption {
+        default = true;
+        type = bool;
+        description = "Whether to enable Zsh integration.";
+      };
+
+      enableFishIntegration = mkOption {
+        default = true;
+        type = bool;
+        description = "Whether to enable Fish integration.";
+      };
     };
   };
 
@@ -50,6 +68,21 @@ in {
           };
         };
       };
+
+      programs = {
+        bash.initExtra = mkIf cfg.enableBashIntegration ''
+          export PATH="$PATH:$HOME/.krew/bin"
+        '';
+
+        zsh.initExtra = mkIf cfg.enableZshIntegration ''
+          export PATH="$PATH:$HOME/.krew/bin"
+        '';
+
+        fish.shellInit = mkIf cfg.enableFishIntegration ''
+          fish_add_path "$HOME/.krew/bin"
+        '';
+      };
     })
+
   ]);
 }
