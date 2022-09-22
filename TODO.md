@@ -3,3 +3,4 @@
 * I don't know why but the `krew` systemd unit never seems to start on activation time... so one has to restart or start it manually.
 * Helm and plugins? For example `helmfile` needs `helm-diff`
 * I should respect the `KREW_ROOT` env var. See [this](https://krew.sigs.k8s.io/docs/user-guide/setup/install/)
+* Install `krew` completions
